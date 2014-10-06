@@ -10,6 +10,10 @@
 #import "LLAvatarView.h"
 #import "LLNote.h"
 
+#define colorRedSmile  [UIColor colorWithRed:140.0/255.0 green:  1.0/255.0 blue: 18.0/255.0 alpha:1]
+#define colorGreenPure [UIColor colorWithRed:119.0/255.0 green:214.0/255.0 blue:110.0/255.0 alpha:1]
+#define colorCoolBlue  [UIColor colorWithRed: 81.0/255.0 green:209.0/255.0 blue:245.0/255.0 alpha:1]
+
 @interface ViewController ()
 
 @end
@@ -17,29 +21,33 @@
 @implementation ViewController
 
 
--(void)viewDidLayoutSubviews{
-    
-    [super viewDidLayoutSubviews];
-    CGRect bounds = self.view.bounds;
-    NSLog(@"viewDidLayoutSubviews");
-    
-}
+//-(void)viewDidLayoutSubviews{
+//    
+//    [super viewDidLayoutSubviews];
+//    CGRect bounds = self.view.bounds;
+//    NSLog(@"viewDidLayoutSubviews");
+//    
+//}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
+    NSArray* colorArray = [[NSArray alloc] initWithObjects:colorRedSmile,colorGreenPure,colorCoolBlue,nil];;
+    
     CGSize frameSize = [self rotatedViewSize];
     CGFloat borderWidth = 50;
     LLNote* note = [[LLNote alloc] initWithFrame:CGRectMake((frameSize.width - borderWidth) / 2, 20, borderWidth, borderWidth) image:[UIImage imageNamed:@"note"]];
     [self.view addSubview:note];
 
     
-    LLAvatarView* avatar = [[LLAvatarView alloc] initWithFrame:CGRectMake(50, 50, 100, 100) image:[UIImage imageNamed:@"avatar"] borderColor:[UIColor blackColor]];
-//    [self.view addSubview:avatar];
-    
+    for(int i = 0; i < 9 ;i++){
+        int randomColorIndex = arc4random() % 3;
+        LLAvatarView* avatar = [[LLAvatarView alloc] initWithFrame:CGRectMake(50 + i*40, 50, 60, 60) image:[UIImage imageNamed:@"avatar"] borderColor:[colorArray objectAtIndex:randomColorIndex]];
+        avatar.center = [self layoutArcNoteCenterWithCenter:CGPointMake(frameSize.width / 2, 50) radius:230 noteIndex:i count:9];
+        [self.view addSubview:avatar];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,7 +61,7 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
-#pragma mark - 
+#pragma mark - orientation
 
 - (CGSize)rotatedViewSize
 {
@@ -65,6 +73,18 @@
     return (isPortrait ?
             CGSizeMake(min, max) :
             CGSizeMake(max, min));
+}
+
+#pragma mark - note center
+
+- (CGPoint)layoutArcNoteCenterWithCenter:(CGPoint)screenCenter radius:(CGFloat)radius noteIndex:(int)noteIndex count:(int)count{
+   
+    CGFloat averagePi = M_PI / (count - 1);
+    
+    CGFloat x = screenCenter.x + radius * (cosf((averagePi) * noteIndex));
+    CGFloat y = screenCenter.y + radius * (sinf((averagePi) * noteIndex));
+    
+    return CGPointMake(x, y);
 }
 
 @end
