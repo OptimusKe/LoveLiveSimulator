@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LLAvatarView : UIImageView
+@class LLAvatarView;
 
-- (id)initWithFrame:(CGRect)frame image:(UIImage *)image borderColor:(UIColor*)borderColor;
+@protocol AvatarTouchDelegate <NSObject>
+@required
+- (void)touch:(LLAvatarView *)avatarView;
+@end
+
+@interface LLAvatarView : UIView
+
+- (id)initWithFrame:(CGRect)frame image:(UIImage *)image borderColor:(UIColor *)borderColor touch:(id <AvatarTouchDelegate> )touchDelegate;
+
+- (void)runCircleAnimation;
 
 @end

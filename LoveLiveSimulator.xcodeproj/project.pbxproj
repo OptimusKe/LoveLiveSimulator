@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0427E61C19E39827000D3042 /* LLCircleLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0427E61B19E39827000D3042 /* LLCircleLauncher.m */; };
+		0427E61F19E3986D000D3042 /* LLCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0427E61E19E3986D000D3042 /* LLCircle.m */; };
 		04FF37F919DD0BB5004BFD06 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FF37F819DD0BB5004BFD06 /* Foundation.framework */; };
 		04FF37FB19DD0BB6004BFD06 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FF37FA19DD0BB6004BFD06 /* CoreGraphics.framework */; };
 		04FF37FD19DD0BB6004BFD06 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FF37FC19DD0BB6004BFD06 /* UIKit.framework */; };
@@ -38,6 +40,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0427E61A19E39827000D3042 /* LLCircleLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLCircleLauncher.h; sourceTree = "<group>"; };
+		0427E61B19E39827000D3042 /* LLCircleLauncher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLCircleLauncher.m; sourceTree = "<group>"; };
+		0427E61D19E3986D000D3042 /* LLCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLCircle.h; sourceTree = "<group>"; };
+		0427E61E19E3986D000D3042 /* LLCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLCircle.m; sourceTree = "<group>"; };
 		04FF37F519DD0BB5004BFD06 /* LoveLiveSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoveLiveSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04FF37F819DD0BB5004BFD06 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04FF37FA19DD0BB6004BFD06 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,6 +133,10 @@
 				04FF383519DD2D6A004BFD06 /* LLAvatarView.m */,
 				04FF383B19DD3602004BFD06 /* LLNote.h */,
 				04FF383C19DD3602004BFD06 /* LLNote.m */,
+				0427E61D19E3986D000D3042 /* LLCircle.h */,
+				0427E61E19E3986D000D3042 /* LLCircle.m */,
+				0427E61A19E39827000D3042 /* LLCircleLauncher.h */,
+				0427E61B19E39827000D3042 /* LLCircleLauncher.m */,
 				04FF380719DD0BB6004BFD06 /* AppDelegate.h */,
 				04FF380819DD0BB6004BFD06 /* AppDelegate.m */,
 				04FF380A19DD0BB6004BFD06 /* Main.storyboard */,
@@ -280,6 +290,8 @@
 				04FF383619DD2D6A004BFD06 /* LLAvatarView.m in Sources */,
 				04FF380919DD0BB6004BFD06 /* AppDelegate.m in Sources */,
 				04FF380519DD0BB6004BFD06 /* main.m in Sources */,
+				0427E61F19E3986D000D3042 /* LLCircle.m in Sources */,
+				0427E61C19E39827000D3042 /* LLCircleLauncher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +496,7 @@
 				04FF382919DD0BB6004BFD06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04FF382A19DD0BB6004BFD06 /* Build configuration list for PBXNativeTarget "LoveLiveSimulatorTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +505,7 @@
 				04FF382C19DD0BB6004BFD06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
