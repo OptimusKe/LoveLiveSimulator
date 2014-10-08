@@ -18,7 +18,7 @@
 @interface LLAvatarView : UIView
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image borderColor:(UIColor *)borderColor touch:(id <AvatarTouchDelegate> )touchDelegate;
-
 - (void)runCircleAnimation;
+- (void)changeImage:(NSString *)imageUrl;
 
 @end

@@ -1,0 +1,6 @@
+FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1" "$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/SDWebImage" "${PODS_ROOT}/Headers/google-plus-ios-sdk"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers" -isystem "${PODS_ROOT}/Headers/SDWebImage" -isystem "${PODS_ROOT}/Headers/google-plus-ios-sdk"
+OTHER_LDFLAGS = -ObjC -framework AddressBook -framework AssetsLibrary -framework CoreGraphics -framework CoreLocation -framework CoreMotion -framework CoreText -framework Foundation -framework GoogleOpenSource -framework GooglePlus -framework ImageIO -framework MediaPlayer -framework Security -framework SystemConfiguration -framework UIKit
+PODS_ROOT = ${SRCROOT}/Pods

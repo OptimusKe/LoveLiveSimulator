@@ -7,11 +7,22 @@
 //
 
 #import "AppDelegate.h"
+#import <GooglePlus/GooglePlus.h>
 
 @implementation AppDelegate
 
+// DO NOT USE THIS CLIENT ID. IT WILL NOT WORK FOR YOUR APP.
+// Please use the client ID created for you by Google.
+static NSString *const kClientID =
+@"860349981618-sg07qmk7h5f5g29fa0n7p733v860gv6o.apps.googleusercontent.com";
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
+    
+	// Set app's client ID for |GPPSignIn| and |GPPShare|.
+	[GPPSignIn sharedInstance].clientID = kClientID;
+    
+    
 	return YES;
 }
 
@@ -35,6 +46,15 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)  application:(UIApplication *)application
+              openURL:(NSURL *)url
+    sourceApplication:(NSString *)sourceApplication
+           annotation:(id)annotation {
+	return [GPPURLHandler handleURL:url
+	              sourceApplication:sourceApplication
+	                     annotation:annotation];
 }
 
 @end

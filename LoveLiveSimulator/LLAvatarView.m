@@ -7,11 +7,15 @@
 //
 
 #import "LLAvatarView.h"
+#import "UIImageView+WebCache.h"
+
+
 
 @interface LLAvatarView ()
 
 @property (nonatomic) UIColor *borderColor;
 @property (nonatomic, strong) CAShapeLayer *circleShape;
+@property (nonatomic, strong) CALayer      *imageLayer;
 @property (nonatomic, assign) id <AvatarTouchDelegate> touchDelegate;
 
 @end
@@ -26,12 +30,12 @@
 		_touchDelegate = touchDelegate;
         
 		//add image
-		CALayer *imageLayer = [CALayer layer];
-		imageLayer.contents = (id)image.CGImage;
-		imageLayer.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
-		imageLayer.cornerRadius = CGRectGetHeight(self.frame) / 2;
-		imageLayer.masksToBounds = YES;
-		[self.layer addSublayer:imageLayer];
+		_imageLayer = [CALayer layer];
+		_imageLayer.contents = (id)image.CGImage;
+		_imageLayer.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+		_imageLayer.cornerRadius = CGRectGetHeight(self.frame) / 2;
+		_imageLayer.masksToBounds = YES;
+		[self.layer addSublayer:_imageLayer];
         
 		self.userInteractionEnabled = YES; //make UIGestureRecognizer work
 		_borderColor = borderColor;
@@ -46,6 +50,18 @@
 	layer.borderColor = _borderColor.CGColor;
 	layer.cornerRadius = CGRectGetHeight(self.frame) / 2;
 	//這邊避免用[layer setMasksToBounds:YES]; 用了在貼上circleShape 會被mask
+}
+
+- (void)changeImage:(NSString *)imageUrl {
+    //G+最早吐出來是50 取代成120 (retina)
+    imageUrl = [imageUrl stringByReplacingOccurrencesOfString:@"?sz=50" withString:@"?sz=120"];
+    
+	[[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageDownloaderUseNSURLCache progress: ^(NSInteger receivedSize, NSInteger expectedSize) {
+	} completed: ^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+	    if (image) {
+	        self.imageLayer.contents = (id)image.CGImage;
+		}
+	}];
 }
 
 #pragma mark - touch
