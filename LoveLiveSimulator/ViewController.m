@@ -7,9 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "LLAvatarView.h"
-#import "LLNote.h"
-#import "LLCircleLauncher.h"
+#import "LLBeaterView.h"
+#import "LLBeatOrigin.h"
+#import "LLBeatManager.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GooglePlus/GooglePlus.h>
 
@@ -21,11 +21,11 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 #define colorGreenPure [UIColor colorWithRed:119.0 / 255.0 green:214.0 / 255.0 blue:110.0 / 255.0 alpha:1]
 #define colorCoolBlue  [UIColor colorWithRed:81.0 / 255.0 green:209.0 / 255.0 blue:245.0 / 255.0 alpha:1]
 
-@interface ViewController () <AvatarTouchDelegate, GPPSignInDelegate>
+@interface ViewController () <BeaterTouchDelegate, GPPSignInDelegate,BeaterTouchDelegate>
 
 @property (strong, nonatomic) NSMutableArray *avatarArray;
 @property (strong, nonatomic) NSArray *colorArray;
-@property (strong, nonatomic) LLNote *note;
+@property (strong, nonatomic) LLBeatOrigin *origin;
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 @property (strong, nonatomic) NSMutableArray *peopleList;
 
@@ -65,19 +65,17 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
     
 	CGSize frameSize = [self rotatedViewSize];
 	CGFloat borderWidth = 50;
-	self.note = [[LLNote alloc] initWithFrame:CGRectMake((frameSize.width - borderWidth) / 2, 20, borderWidth, borderWidth) image:[UIImage imageNamed:@"note"]];
-	[self.view addSubview:self.note];
+	self.origin = [[LLBeatOrigin alloc] initWithFrame:CGRectMake((frameSize.width - borderWidth) / 2, 20, borderWidth, borderWidth) image:[UIImage imageNamed:@"note"]];
+	[self.view addSubview:self.origin];
     
     
 	for (int i = 0; i < kMaxAvatarNum; i++) {
 		int randomColorIndex = arc4random() % kMaxColorNum;
-		LLAvatarView *avatar = [[LLAvatarView alloc] initWithFrame:CGRectMake(50 + i * 40, 50, 60, 60) image:[UIImage imageNamed:@"avatar"] borderColor:[self.colorArray objectAtIndex:randomColorIndex] touch:self];
-		avatar.center = [self layoutArcNoteCenterWithCenter:CGPointMake(frameSize.width / 2, 50) radius:230 noteIndex:i count:kMaxAvatarNum];
-		[self.avatarArray addObject:avatar];
-		[self.view addSubview:avatar];
+		LLBeaterView *beater = [[LLBeaterView alloc] initWithFrame:CGRectMake(50 + i * 40, 50, 60, 60) image:[UIImage imageNamed:@"avatar"] borderColor:[self.colorArray objectAtIndex:randomColorIndex] touch:self];
+		beater.center = [self layoutArcNoteCenterWithCenter:CGPointMake(frameSize.width / 2, 50) radius:230 noteIndex:i count:kMaxAvatarNum];
+		[self.avatarArray addObject:beater];
+		[self.view addSubview:beater];
 	}
-    
-    
     
 	NSRunLoop *runloop = [NSRunLoop currentRunLoop];
 	[runloop addTimer:[NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(launchCircle) userInfo:nil repeats:YES] forMode:NSDefaultRunLoopMode];
@@ -154,10 +152,10 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 - (void)setAvatarImage {
 	//社交圈少於9人就隨機給圖
 	if (self.peopleList.count < kMaxAvatarNum) {
-		for (LLAvatarView *avatarView in self.avatarArray) {
+		for (LLBeaterView *beaterView in self.avatarArray) {
 			int randomImageIndex = arc4random() % self.peopleList.count;
 			GTLPlusPerson *person = [self.peopleList objectAtIndex:randomImageIndex];
-			[avatarView changeImage:person.image.url];
+			[beaterView changeImage:person.image.url];
 		}
 	}
 	else {
@@ -175,9 +173,9 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 		}
         
 		for (int i = 0; i < kMaxAvatarNum; i++) {
-			LLAvatarView *avatarView = [self.avatarArray objectAtIndex:i];
+			LLBeaterView *beaterView = [self.avatarArray objectAtIndex:i];
 			GTLPlusPerson *person = [randomArray objectAtIndex:i];
-			[avatarView changeImage:person.image.url];
+			[beaterView changeImage:person.image.url];
 		}
 	}
 }
@@ -211,13 +209,13 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 - (void)launchCircle {
 	int randomCircleIndex = arc4random() % kMaxAvatarNum;
 	int randomColorIndex = arc4random() % kMaxColorNum;
-	[CircleLauncher launchCircleWithWidth:60 color:[self.colorArray objectAtIndex:randomColorIndex] index:randomCircleIndex duration:2.0 centerView:self.note targetAvatar:[self.avatarArray objectAtIndex:randomCircleIndex]];
+	[BeatManager launchCircleWithWidth:60 color:[self.colorArray objectAtIndex:randomColorIndex] index:randomCircleIndex duration:2.0 centerView:self.origin targetBeater:[self.avatarArray objectAtIndex:randomCircleIndex]];
 }
 
 #pragma mark - AvatarTouchDelegate
 
-- (void)touch:(LLAvatarView *)avatarView {
-	[CircleLauncher checkCircleTouchMatchAvatar:avatarView];
+- (void)touch:(LLBeaterView *)beaterView {
+	[BeatManager checkCircleTouchMatchBeater:beaterView];
 }
 
 @end

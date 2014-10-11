@@ -1,18 +1,18 @@
 //
-//  LLCircle.h
+//  LLBeatCircle.h
 //  LoveLiveSimulator
 //
-//  Created by Jack on 2014/10/7.
+//  Created by OptimusKe on 2014/10/11.
 //  Copyright (c) 2014年 KerKer. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@class LLCircleLauncher;
+@class LLBeatManager;
 
-@interface LLCircle : UIView
+@interface LLBeatCircle : UIView
 
-- (id)initWithFrame:(CGRect)frame circle:(UIColor *)borderColor index:(int)index launcher:(LLCircleLauncher *)launcher;
+- (id)initWithFrame:(CGRect)frame circle:(UIColor *)borderColor index:(int)index launcher:(LLBeatManager *)launcher;
 - (void)animationFrom:(CGPoint)fromValue to:(CGPoint)toValue withDuration:(NSTimeInterval)duration;
 - (void)stopAnimation;
 

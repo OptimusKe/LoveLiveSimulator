@@ -1,15 +1,15 @@
 //
-//  LLCircle.m
+//  LLBeatCircle.m
 //  LoveLiveSimulator
 //
-//  Created by Jack on 2014/10/7.
+//  Created by OptimusKe on 2014/10/11.
 //  Copyright (c) 2014年 KerKer. All rights reserved.
 //
 
-#import "LLCircle.h"
-#import "LLCircleLauncher.h"
+#import "LLBeatCircle.h"
+#import "LLBeatManager.h"
 
-@interface LLCircle ()
+@interface LLBeatCircle ()
 
 @property (nonatomic) UIColor *borderColor;
 @property (nonatomic, assign) int index;
@@ -17,20 +17,19 @@
 @property (nonatomic, assign) CGFloat rate, totaltime, scaleStartValue;
 @property (nonatomic, assign) CFTimeInterval startTime;
 @property (nonatomic, strong) CADisplayLink *link;
-@property (nonatomic, assign) LLCircleLauncher *launcher;
-
+@property (nonatomic, assign) LLBeatManager *beatManager;
 
 @end
 
-@implementation LLCircle
+@implementation LLBeatCircle
 
-- (id)initWithFrame:(CGRect)frame circle:(UIColor *)borderColor index:(int)index launcher:(LLCircleLauncher *)launcher{
+- (id)initWithFrame:(CGRect)frame circle:(UIColor *)borderColor index:(int)index launcher:(LLBeatManager *)launcher{
 	self = [super initWithFrame:frame];
 	if (self) {
 		// Initialization code
         _index = index;
 		_borderColor = borderColor;
-        _launcher = launcher;
+        _beatManager = launcher;
 		self.userInteractionEnabled = NO;
         
 		[self draw];
@@ -63,7 +62,7 @@
 - (void)stopAnimation {
 	if (self.link) {
 		[self.link invalidate];
-//		[self.link removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        //		[self.link removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	}
 }
 
@@ -72,7 +71,7 @@
 - (void)updateValue:(CADisplayLink *)link {
 	float dt = ([link timestamp] - self.startTime) / self.totaltime;
     if (dt >= 2.0) {
-        [self.launcher releaseCircle:self];
+        [self.beatManager releaseCircle:self];
         return;
     }
     

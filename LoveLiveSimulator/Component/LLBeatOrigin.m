@@ -1,14 +1,14 @@
 //
-//  LLNote.m
+//  LLBeatOrigin.m
 //  LoveLiveSimulator
 //
-//  Created by Jack on 2014/10/2.
+//  Created by OptimusKe on 2014/10/11.
 //  Copyright (c) 2014年 KerKer. All rights reserved.
 //
 
-#import "LLNote.h"
+#import "LLBeatOrigin.h"
 
-@implementation LLNote
+@implementation LLBeatOrigin
 
 - (id)initWithFrame:(CGRect)frame image:(UIImage *)image;
 {

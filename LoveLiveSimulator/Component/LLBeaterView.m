@@ -1,30 +1,26 @@
 //
-//  LLAvatarView.m
+//  LLBeaterView.m
 //  LoveLiveSimulator
 //
-//  Created by Jack on 2014/10/2.
+//  Created by OptimusKe on 2014/10/11.
 //  Copyright (c) 2014年 KerKer. All rights reserved.
 //
 
-#import "LLAvatarView.h"
+#import "LLBeaterView.h"
 #import "UIImageView+WebCache.h"
 
-
-
-@interface LLAvatarView ()
+@interface LLBeaterView ()
 
 @property (nonatomic) UIColor *borderColor;
 @property (nonatomic, strong) CAShapeLayer *circleShape;
 @property (nonatomic, strong) CALayer      *imageLayer;
-@property (nonatomic, assign) id <AvatarTouchDelegate> touchDelegate;
+@property (nonatomic, assign) id <BeaterTouchDelegate> touchDelegate;
 
 @end
 
-@implementation LLAvatarView
+@implementation LLBeaterView
 
-
-
-- (id)initWithFrame:(CGRect)frame image:(UIImage *)image borderColor:(UIColor *)borderColor touch:(id <AvatarTouchDelegate> )touchDelegate {
+- (id)initWithFrame:(CGRect)frame image:(UIImage *)image borderColor:(UIColor *)borderColor touch:(id <BeaterTouchDelegate> )touchDelegate {
 	self = [super initWithFrame:frame];
 	if (self) {
 		_touchDelegate = touchDelegate;
