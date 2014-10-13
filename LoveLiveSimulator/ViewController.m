@@ -10,6 +10,8 @@
 #import "LLBeaterView.h"
 #import "LLBeatOrigin.h"
 #import "LLBeatManager.h"
+#import "LLAccuracyLabel.h"
+#import "LLComboLabel.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GooglePlus/GooglePlus.h>
 
@@ -21,13 +23,15 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 #define colorGreenPure [UIColor colorWithRed:119.0 / 255.0 green:214.0 / 255.0 blue:110.0 / 255.0 alpha:1]
 #define colorCoolBlue  [UIColor colorWithRed:81.0 / 255.0 green:209.0 / 255.0 blue:245.0 / 255.0 alpha:1]
 
-@interface ViewController () <BeaterTouchDelegate, GPPSignInDelegate, BeaterTouchDelegate>
+@interface ViewController () <BeaterTouchDelegate, GPPSignInDelegate, BeaterTouchDelegate, AccuracyJudgeDelegate>
 
 @property (strong, nonatomic) NSMutableArray *avatarArray;
 @property (strong, nonatomic) NSArray *colorArray;
 @property (strong, nonatomic) LLBeatOrigin *origin;
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 @property (strong, nonatomic) NSMutableArray *peopleList;
+@property (strong, nonatomic) LLAccuracyLabel *accuracylabel;
+@property (strong, nonatomic) LLComboLabel *comboLabel;
 
 @end
 
@@ -68,6 +72,16 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
     self.origin = [[LLBeatOrigin alloc] initWithFrame:CGRectMake((frameSize.width - borderWidth) / 2, 20, borderWidth, borderWidth) image:[UIImage imageNamed:@"note"]];
     [self.view addSubview:self.origin];
     
+    CGFloat accuracyWidth  = 150;
+    CGFloat accuracyHeight = 40;
+    self.accuracylabel = [[LLAccuracyLabel alloc] initWithFrame:CGRectMake(0, 0, accuracyWidth, accuracyHeight)];
+    self.accuracylabel.center = CGPointMake(CGRectGetMidX(self.origin.frame), (frameSize.height - accuracyHeight) / 2);
+    [self.view addSubview:self.accuracylabel];
+    
+    self.comboLabel = [[LLComboLabel alloc] initWithFrame:CGRectMake(0, 0, accuracyWidth, accuracyHeight)];
+    self.comboLabel.center = CGPointMake(CGRectGetMidX(self.origin.frame), CGRectGetMidY(self.accuracylabel.frame) - accuracyHeight);
+    [self.view addSubview:self.comboLabel];
+    
     
     for (int i = 0; i < kMaxAvatarNum; i++) {
         int randomColorIndex = arc4random() % kMaxColorNum;
@@ -79,6 +93,8 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
     
     NSRunLoop *runloop = [NSRunLoop currentRunLoop];
     [runloop addTimer:[NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(launchCircle) userInfo:nil repeats:YES] forMode:NSDefaultRunLoopMode];
+    
+    BeatManager.accuracyDelegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -166,7 +182,7 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
         NSMutableArray *randomArray = [[NSMutableArray alloc] initWithCapacity:kMaxAvatarNum];
         
         for (int i = 0; i < kMaxAvatarNum; i++) {
-            int index = arc4random_uniform(mutableArray.count);
+            int index = arc4random_uniform((int)mutableArray.count);
             GTLPlusPerson *person = [mutableArray objectAtIndex:index];
             [randomArray addObject:person];
             [mutableArray removeObjectAtIndex:index];
@@ -184,10 +200,8 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 
 - (CGSize)rotatedViewSize {
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
-    
     float max = MAX(self.view.bounds.size.width, self.view.bounds.size.height);
     float min = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
-    
     return (isPortrait ?
             CGSizeMake(min, max) :
             CGSizeMake(max, min));
@@ -197,10 +211,8 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 
 - (CGPoint)layoutArcNoteCenterWithCenter:(CGPoint)screenCenter radius:(CGFloat)radius noteIndex:(int)noteIndex count:(int)count {
     CGFloat averagePi = M_PI / (count - 1);
-    
     CGFloat x = screenCenter.x + radius * (cosf((averagePi) * noteIndex));
     CGFloat y = screenCenter.y + radius * (sinf((averagePi) * noteIndex));
-    
     return CGPointMake(x, y);
 }
 
@@ -216,6 +228,16 @@ static const int kMaxGooglePlusBestNum  = 30; //Best Top
 
 - (void)touch:(LLBeaterView *)beaterView {
     [BeatManager checkCircleTouchMatchBeater:beaterView];
+}
+
+#pragma mark - AccuracyJudgeDelegate
+
+- (void)accuracyJudge:(NSString *)accuracy {
+    [self.accuracylabel showAccuracyAnimationWithText:accuracy];
+}
+
+- (void)showCombo:(int)combo {
+    [self.comboLabel showComboAnimationWithValue:combo];
 }
 
 @end

@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSMutableArray *circleArray;
 @property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, assign) int combo;
 
 @end
 
@@ -30,8 +31,8 @@
     if (self = [super init]) {
         self.circleArray = [NSMutableArray array];
         self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
-        //        self.startTime = CACurrentMediaTime();
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        self.combo = 0;
     }
     return self;
 }
@@ -67,6 +68,11 @@
     
     if (missedCircle) {
         [self releaseCircle:missedCircle];
+        if (self.accuracyDelegate && [self.accuracyDelegate respondsToSelector:@selector(accuracyJudge:)] && [self.accuracyDelegate respondsToSelector:@selector(showCombo:)]) {
+            self.combo = 0;
+            [self.accuracyDelegate accuracyJudge:@"MISS"];
+            [self.accuracyDelegate showCombo:self.combo];
+        }
     }
 }
 
@@ -84,6 +90,31 @@
     
     if (touchedCircle) {
         [self releaseCircle:touchedCircle];
+        if (self.accuracyDelegate && [self.accuracyDelegate respondsToSelector:@selector(accuracyJudge:)] && [self.accuracyDelegate respondsToSelector:@selector(showCombo:)]) {
+            CGFloat accuracyPerfectOffset = 0.05;
+            CGFloat accuracyGreatOffset   = 0.12;
+            CGFloat accuracyGoodOffset    = 0.18;
+            CGFloat accuracy = fabs(touchedCircle.dTime - 1.0);
+            
+            if (accuracy < accuracyPerfectOffset) {
+                [self.accuracyDelegate accuracyJudge:@"PERFECT"];
+                self.combo++;
+            }
+            else if (accuracy >= accuracyPerfectOffset && accuracy < accuracyGreatOffset) {
+                [self.accuracyDelegate accuracyJudge:@"GREAT"];
+                self.combo++;
+            }
+            else if (accuracy >= accuracyGreatOffset && accuracy < accuracyGoodOffset) {
+                [self.accuracyDelegate accuracyJudge:@"GOOD"];
+                self.combo = 0;
+            }
+            else {
+                [self.accuracyDelegate accuracyJudge:@"BAD"];
+                self.combo = 0;
+            }
+            
+            [self.accuracyDelegate showCombo:self.combo];
+        }
     }
 }
 
