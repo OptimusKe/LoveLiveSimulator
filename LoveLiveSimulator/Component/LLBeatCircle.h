@@ -12,8 +12,10 @@
 
 @interface LLBeatCircle : UIView
 
+@property (nonatomic, assign) CGFloat dTime;
+
 - (id)initWithFrame:(CGRect)frame circle:(UIColor *)borderColor index:(int)index launcher:(LLBeatManager *)launcher;
 - (void)animationFrom:(CGPoint)fromValue to:(CGPoint)toValue withDuration:(NSTimeInterval)duration;
-- (void)stopAnimation;
+- (void)update:(CADisplayLink *)displayLink;
 
 @end
